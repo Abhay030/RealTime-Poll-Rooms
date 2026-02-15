@@ -1,9 +1,7 @@
-/**
- * Global error handling middleware for Express.
- * Catches all errors thrown or passed via next(err) and returns
- * a consistent JSON error response.
- */
-// eslint-disable-next-line no-unused-vars
+// Global error handling middleware for Express.
+// Catches all errors thrown or passed via next(err) and returns
+// a consistent JSON error response.
+
 const errorHandler = (err, req, res, next) => {
     console.error(`[Error] ${err.message}`);
 

@@ -2,10 +2,9 @@ const Poll = require("../models/Poll");
 const Vote = require("../models/Vote");
 const { getIO } = require("../config/socket");
 
-/**
- * POST /api/polls
- * Create a new poll with a question and at least 2 options.
- */
+//   POST /api/polls
+//   Create a new poll with a question and at least 2 options.---
+
 const createPoll = async (req, res, next) => {
     try {
         const { question, options } = req.body;
@@ -38,10 +37,9 @@ const createPoll = async (req, res, next) => {
     }
 };
 
-/**
- * GET /api/polls/:id
- * Fetch a poll by its ID.
- */
+//   GET /api/polls/:id
+//   Fetch a poll by its ID.----
+
 const getPoll = async (req, res, next) => {
     try {
         const poll = await Poll.findById(req.params.id);
