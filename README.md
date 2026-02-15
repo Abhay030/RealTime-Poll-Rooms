@@ -121,14 +121,19 @@ The client starts at `http://localhost:5173` and proxies API requests to the bac
 ```
 Real-Time-Poll-Rooms/
 ├── server/
+│   ├── config/
+│   │   ├── db.js             # MongoDB connection
+│   │   └── socket.js         # Socket.io initialization
+│   ├── controllers/
+│   │   └── pollController.js # Route handler logic
 │   ├── models/
-│   │   ├── Poll.js          # Poll schema
-│   │   └── Vote.js          # Vote schema with anti-abuse indexes
+│   │   ├── Poll.js           # Poll schema
+│   │   └── Vote.js           # Vote schema with anti-abuse indexes
 │   ├── routes/
-│   │   └── polls.js         # REST API routes
+│   │   └── polls.js          # REST API route definitions
 │   ├── middleware/
-│   │   └── errorHandler.js  # Global error handler
-│   ├── server.js            # Entry point (Express + Socket.io + MongoDB)
+│   │   └── errorHandler.js   # Global error handler
+│   ├── server.js             # Entry point (Express + Socket.io + MongoDB)
 │   ├── .env.example
 │   └── package.json
 ├── client/
