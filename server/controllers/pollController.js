@@ -17,7 +17,6 @@ const createPoll = async (req, res, next) => {
             return res.status(400).json({ error: "At least 2 options are required" });
         }
 
-        // Filter out empty options
         const validOptions = options
             .map((opt) => (typeof opt === "string" ? opt.trim() : ""))
             .filter((opt) => opt.length > 0);
@@ -38,8 +37,6 @@ const createPoll = async (req, res, next) => {
 };
 
 //   GET /api/polls/:id
-//   Fetch a poll by its ID.----
-
 const getPoll = async (req, res, next) => {
     try {
         const poll = await Poll.findById(req.params.id);
@@ -54,28 +51,22 @@ const getPoll = async (req, res, next) => {
     }
 };
 
-/**
- * POST /api/polls/:id/vote
- * Cast a vote on a poll option.
- *
- * Anti-abuse mechanisms:
- *
- * 1. IP-based prevention: The voter's IP address is recorded. If the same IP
- *    has already voted on this poll, the vote is rejected.
- *    LIMITATION: Users behind the same NAT/proxy share an IP, so legitimate
- *    users on the same network may be blocked. IPs can also be spoofed or
- *    changed using VPNs.
- *
- * 2. Browser token prevention: A UUID is generated client-side and stored in
- *    localStorage. This token is sent with each vote request. If the same
- *    token has already voted, the vote is rejected.
- *    LIMITATION: Clearing localStorage or using incognito mode generates a
- *    new token, allowing the same user to vote again. This is not a
- *    substitute for proper user authentication.
- *
- * Together these mechanisms provide reasonable protection for a public,
- * unauthenticated poll system without requiring user sign-up.
- */
+
+// Anti-abuse mechanisms:
+// 1. IP-based prevention: The voter's IP address is recorded. If the same IP
+//    has already voted on this poll, the vote is rejected.
+//    LIMITATION: Users behind the same NAT/proxy share an IP, so legitimate
+//    users on the same network may be blocked. IPs can also be spoofed or
+//    changed using VPNs.
+// 2. Browser token prevention: A UUID is generated client-side and stored in
+//    localStorage. This token is sent with each vote request. If the same
+//    token has already voted, the vote is rejected.
+//    LIMITATION: Clearing localStorage or using incognito mode generates a
+//    new token, allowing the same user to vote again. This is not a
+//    substitute for proper user authentication.
+// Together these mechanisms provide reasonable protection for a public,
+// unauthenticated poll system without requiring user sign-up.
+
 const votePoll = async (req, res, next) => {
     try {
         const { optionIndex, voterToken } = req.body;
@@ -96,13 +87,11 @@ const votePoll = async (req, res, next) => {
             return res.status(404).json({ error: "Poll not found" });
         }
 
-        // Validate option index
         if (optionIndex < 0 || optionIndex >= poll.options.length) {
             return res.status(400).json({ error: "Invalid option index" });
         }
 
         // Get voter IP from request
-        // x-forwarded-for handles reverse proxies (e.g., Nginx, cloud load balancers)
         const voterIP =
             req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
             req.socket.remoteAddress ||
@@ -122,10 +111,8 @@ const votePoll = async (req, res, next) => {
                 .json({ error: "You have already voted on this poll (browser detected)" });
         }
 
-        // Record the vote — unique index will also catch race conditions
         await Vote.create({ pollId, voterIP, voterToken, optionIndex });
 
-        // Atomically increment the vote count to handle simultaneous votes safely
         const updatedPoll = await Poll.findOneAndUpdate(
             { _id: pollId },
             { $inc: { [`options.${optionIndex}.votes`]: 1 } },

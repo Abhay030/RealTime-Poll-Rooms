@@ -1,22 +1,22 @@
-// Global error handling middleware for Express.
-// Catches all errors thrown or passed via next(err) and returns
+// Global error handling middleware 
+// Catches all errors that may happen and returns
 // a consistent JSON error response.
 
 const errorHandler = (err, req, res, next) => {
     console.error(`[Error] ${err.message}`);
 
-    // Mongoose validation error
+    //  validation error
     if (err.name === "ValidationError") {
         const messages = Object.values(err.errors).map((e) => e.message);
         return res.status(400).json({ error: messages.join(", ") });
     }
 
-    // Mongoose bad ObjectId
+    //  bad ObjectId
     if (err.name === "CastError" && err.kind === "ObjectId") {
         return res.status(400).json({ error: "Invalid poll ID format" });
     }
 
-    // MongoDB duplicate key (e.g., duplicate vote)
+    //  duplicate key
     if (err.code === 11000) {
         return res.status(403).json({ error: "You have already voted on this poll" });
     }

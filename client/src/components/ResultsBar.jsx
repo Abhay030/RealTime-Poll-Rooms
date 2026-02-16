@@ -1,7 +1,5 @@
-/**
- * ResultsBar — displays a single poll option with its vote count and
- * a horizontal bar sized proportionally to its share of total votes.
- */
+// displays a single poll option with its vote count and
+
 export default function ResultsBar({ text, votes, totalVotes, isSelected }) {
     const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
 
