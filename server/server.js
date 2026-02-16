@@ -16,7 +16,9 @@ const server = http.createServer(app);
 initSocket(server);
 
 // ── Middleware ────────────────────────────────────────────────────────────────
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+// Strip trailing slash from CLIENT_URL to avoid CORS origin mismatch
+const CLIENT_URL = (process.env.CLIENT_URL || "http://localhost:5173").replace(/\/+$/, "");
+app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
 
 // Trust proxy for accurate IP detection behind reverse proxies
