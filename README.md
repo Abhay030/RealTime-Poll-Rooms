@@ -4,6 +4,13 @@ A full-stack web application for creating and sharing live polls. Create a poll,
 
 ![Tech Stack](https://img.shields.io/badge/React-Vite-blue) ![Tech Stack](https://img.shields.io/badge/Node.js-Express-green) ![Tech Stack](https://img.shields.io/badge/MongoDB-Mongoose-brightgreen) ![Tech Stack](https://img.shields.io/badge/Socket.io-Real--Time-yellow)
 
+### 🔗 Live Demo
+
+| Service  | URL                                                                 |
+| -------- | ------------------------------------------------------------------- |
+| Frontend | [real-time-poll-rooms-virid.vercel.app](https://real-time-poll-rooms-virid.vercel.app/) |
+| Backend  | [realtime-poll-rooms-b.onrender.com](https://realtime-poll-rooms-b.onrender.com/api/health) |
+
 ---
 
 ## Tech Stack
